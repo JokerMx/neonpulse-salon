@@ -1,0 +1,72 @@
+<!-- frontend/index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeonPulse - Salón de Belleza</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>💇‍♀️ NeonPulse Salón</h1>
+      <p>Tu estilo, nuestra pasión</p>
+    </header>
+
+    <section id="servicios-section">
+      <h2>Nuestros Servicios</h2>
+      <div id="servicios-container"></div>
+    </section>
+
+    <section id="reservas-section">
+      <div id="reservas-container"></div>
+    </section>
+  </div>
+
+  <!-- Modal de Reserva -->
+  <div id="modal-reserva" class="modal hidden">
+    <div class="modal-content">
+      <button class="close-modal">&times;</button>
+      <h2>📅 Nueva Reserva</h2>
+      <form id="form-reserva">
+        <input type="hidden" name="servicio_id">
+        
+        <div class="form-group">
+          <label for="cliente_id">Cliente</label>
+          <select id="cliente_id" name="cliente_id" required>
+            <option value="">Selecciona un cliente</option>
+            <option value="1">María Pérez</option>
+            <option value="2">Juan García</option>
+            <option value="3">Laura Sánchez</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="profesional_id">Profesional</label>
+          <select id="profesional_id" name="profesional_id" required>
+            <option value="">Selecciona un profesional</option>
+            <option value="1">María González - Estilista</option>
+            <option value="2">Carlos Rodríguez - Barbero</option>
+            <option value="3">Ana Martínez - Colorista</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="fecha">Fecha</label>
+          <input type="date" id="fecha" name="fecha" required min="2024-01-01">
+        </div>
+
+        <div class="form-group">
+          <label for="hora">Hora</label>
+          <input type="time" id="hora" name="hora" required>
+        </div>
+
+        <button type="submit" class="btn-submit">Reservar</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
