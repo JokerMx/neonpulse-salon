@@ -17,7 +17,9 @@ export interface Reserva {
 }
 
 export interface CrearReservaDTO {
-  cliente_id: number;
+  nombre_cliente: string;
+  email: string;
+  telefono: string;
   servicio_id: number;
   profesional_id: number;
   fecha: string;

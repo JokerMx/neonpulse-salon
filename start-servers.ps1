@@ -42,5 +42,3 @@ Write-Host ""
 Write-Host "Presiona Ctrl+C en cada ventana para detener el servidor" -ForegroundColor Yellow
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "Presiona cualquier tecla para cerrar esta ventana..."
-Read-Host

@@ -465,6 +465,17 @@ section h2::after {
   font-size: 1.6rem;
 }
 
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-row .form-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+
 .form-group {
   margin-bottom: 1.25rem;
   position: relative;
@@ -495,6 +506,56 @@ section h2::after {
 .form-group option {
   background: var(--deep-purple);
   color: var(--white);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-10px); }
+  80% { transform: translateX(10px); }
+}
+
+@keyframes pulse-danger {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+  50% { opacity: 0.85; box-shadow: 0 0 0 6px rgba(231, 76, 60, 0); }
+}
+
+.field-error {
+  display: none;
+  color: var(--white);
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--danger) 0%, #a94034 100%);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  margin-top: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  animation: pulse-danger 1.5s ease-in-out infinite;
+  border: 1px solid var(--danger);
+}
+
+.form-group.error .field-error {
+  display: flex;
+}
+
+.form-group.error {
+  animation: shake 0.5s ease-in-out;
+}
+
+.form-group.error input,
+.form-group.error select,
+.form-group.error textarea {
+  border-color: var(--danger);
+  box-shadow: 0 0 12px rgba(231, 76, 60, 0.4);
+  animation: pulse-border 0.6s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 0 12px rgba(231, 76, 60, 0.4); }
+  50% { box-shadow: 0 0 20px rgba(231, 76, 60, 0.7); }
 }
 
 .form-group input::placeholder,

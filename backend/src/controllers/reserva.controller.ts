@@ -13,6 +13,16 @@ interface OkResult {
   affectedRows: number;
 }
 
+interface CrearReservaBody {
+  nombre_cliente: string;
+  email: string;
+  telefono: string;
+  servicio_id: number;
+  profesional_id: number;
+  fecha: string;
+  hora: string;
+}
+
 export class ReservaController {
   // GET /api/reservas
   static async getAll(req: Request, res: Response) {
@@ -44,21 +54,49 @@ export class ReservaController {
     }
   }
 
+  private static async findOrCreateCliente(
+    email: string,
+    nombre: string,
+    telefono: string
+  ): Promise<number> {
+    const [rows] = await pool.execute(
+      'SELECT id FROM clientes WHERE email = ?',
+      [email]
+    );
+
+    const existing = (rows as { id: number }[])[0];
+    if (existing) {
+      return existing.id;
+    }
+
+    const [result] = await pool.execute(
+      'INSERT INTO clientes (nombre, telefono, email, tipo) VALUES (?, ?, ?, ?)',
+      [nombre, telefono, email, 'NUEVO']
+    );
+
+    return (result as OkResult).insertId;
+  }
+
   // POST /api/reservas
   static async create(req: Request, res: Response) {
     try {
-      const { cliente_id, servicio_id, profesional_id, fecha, hora } = req.body;
+      const body = req.body as CrearReservaBody;
+      const { nombre_cliente, email, telefono, servicio_id, profesional_id, fecha, hora } = body;
 
-      // Validar disponibilidad
+      const clienteId = await ReservaController.findOrCreateCliente(email, nombre_cliente, telefono);
+
+      const minInterval = parseInt(process.env.MIN_INTERVAL_MINUTES || '30', 10);
+
       const [check] = await pool.execute(
-        'SELECT id FROM reservas WHERE profesional_id = ? AND fecha = ? AND hora = ? AND estado != "CANCELADA"',
-        [profesional_id, fecha, hora]
+        'SELECT id, hora FROM reservas WHERE profesional_id = ? AND fecha = ? AND estado != "CANCELADA" AND ABS(TIME_TO_SEC(TIMEDIFF(hora, ?))) / 60 < ?',
+        [profesional_id, fecha, hora, minInterval]
       );
 
-      if ((check as { id: number }[]).length > 0) {
+      if ((check as { id: number; hora: string }[]).length > 0) {
+        const existingHora = (check as { id: number; hora: string }[])[0].hora;
         return res.status(409).json({
           success: false,
-          message: 'El profesional ya tiene una reserva en ese horario'
+          message: `El profesional ya tiene una reserva a las ${existingHora}. El intervalo mínimo es de ${minInterval} minutos.`
         });
       }
 
@@ -66,10 +104,10 @@ export class ReservaController {
         `INSERT INTO reservas 
          (cliente_id, servicio_id, profesional_id, fecha, hora, estado) 
          VALUES (?, ?, ?, ?, ?, 'PENDIENTE')`,
-        [cliente_id, servicio_id, profesional_id, fecha, hora]
+        [clienteId, servicio_id, profesional_id, fecha, hora]
       );
 
-      const insertId = (result as OkResult[])[0].insertId;
+      const insertId = (result as OkResult).insertId;
 
       const [newReserva] = await pool.execute(`
         SELECT 
@@ -111,7 +149,7 @@ export class ReservaController {
   static async updateEstado(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { estado } = req.body;
+      const { estado } = req.body as { estado: string };
 
       const validEstados = ['PENDIENTE', 'CONFIRMADA', 'EN_PROGRESO', 'COMPLETADA', 'CANCELADA'];
 
