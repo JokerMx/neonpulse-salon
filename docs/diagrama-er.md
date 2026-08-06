@@ -4,34 +4,34 @@
 erDiagram
     SERVICIOS {
         int id PK
-        varchar nombre
+        string nombre
         text descripcion
-        decimal precio
+        float precio
         int duracion_min
-        enum categoria
+        string categoria
         boolean activo
-        timestamp created_at
-        timestamp updated_at
+        datetime created_at
+        datetime updated_at
     }
 
     PROFESIONALES {
         int id PK
-        varchar nombre
-        enum especialidad
-        json horario
+        string nombre
+        string especialidad
+        text horario
         boolean activo
-        timestamp created_at
-        timestamp updated_at
+        datetime created_at
+        datetime updated_at
     }
 
     CLIENTES {
         int id PK
-        varchar nombre
-        varchar telefono
-        varchar email UNIQUE
-        enum tipo
-        timestamp created_at
-        timestamp updated_at
+        string nombre
+        string telefono
+        string email
+        string tipo
+        datetime created_at
+        datetime updated_at
     }
 
     RESERVAS {
@@ -41,9 +41,9 @@ erDiagram
         int profesional_id FK
         date fecha
         time hora
-        enum estado
-        timestamp created_at
-        timestamp updated_at
+        string estado
+        datetime created_at
+        datetime updated_at
     }
 
     CLIENTES ||--o{ RESERVAS : "cliente_id"
