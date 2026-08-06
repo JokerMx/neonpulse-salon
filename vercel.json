@@ -7,8 +7,8 @@
     "backend": {
       "root": "backend",
       "buildCommand": "npm run build",
-      "outputDirectory": "dist",
-      "entrypoint": "dist/index.js"
+      "startCommand": "npm start",
+      "outputDirectory": "dist"
     }
   },
   "rewrites": [
