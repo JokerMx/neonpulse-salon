@@ -1,9 +1,12 @@
 // frontend/src/views/servicios.view.ts
 import type { Servicio } from '../interfaces/servicio.interface';
 import { EstadoCarga } from '../enums/estados.enum';
+import { obtenerIconoCategoria } from '../utils/icon-categories';
+import { ReservaService } from '../services/reserva.service';
 
 export class ServiciosView {
   private container: HTMLElement;
+  private reservasContainer: HTMLElement;
 
   constructor() {
     const container = document.getElementById('servicios-container');
@@ -11,6 +14,36 @@ export class ServiciosView {
       throw new Error('Contenedor de servicios no encontrado');
     }
     this.container = container;
+
+    const reservasContainer = document.getElementById('reservas-container');
+    if (!reservasContainer) {
+      throw new Error('Contenedor de reservas no encontrado');
+    }
+    this.reservasContainer = reservasContainer;
+
+    this.cargarReservas();
+    this.iniciarAutoRefresh();
+  }
+
+  private iniciarAutoRefresh(): void {
+    setInterval(() => {
+      this.cargarReservas();
+    }, 30000);
+  }
+
+  private async cargarReservas(): Promise<void> {
+    try {
+      const reservas = await ReservaService.getAll();
+      this.renderReservas(reservas);
+    } catch (error) {
+      const mensaje = error instanceof Error ? error.message : 'Error desconocido';
+      this.reservasContainer.innerHTML = `
+        <div class="error-container">
+          <span class="error-icon">⚠️</span>
+          <p class="error-message">${mensaje}</p>
+        </div>
+      `;
+    }
   }
 
   renderState(state: EstadoCarga, data?: Servicio[] | string): void {
@@ -57,12 +90,12 @@ export class ServiciosView {
       <div class="servicios-grid">
         ${servicios.map(servicio => `
           <div class="servicio-card" data-id="${servicio.id}">
+            <span class="categoria-badge">${obtenerIconoCategoria(servicio.categoria)}</span>
             <h3>${servicio.nombre}</h3>
-            <p class="descripcion">${servicio.descripcion}</p>
+            <p class="descripcion">${servicio.descripcion || 'Disfruta de una experiencia única en nuestro salón.'}</p>
             <div class="info">
-              <span class="categoria">${servicio.categoria}</span>
               <span class="duracion">${servicio.duracion} min</span>
-              <span class="precio">$${servicio.precio.toLocaleString()}</span>
+              <span class="precio">$${servicio.precio.toLocaleString('es-CO')}</span>
             </div>
             <button class="btn-reservar" data-id="${servicio.id}">Reservar</button>
           </div>
@@ -102,6 +135,32 @@ export class ServiciosView {
       <div class="initial-container">
         <p>Cargando servicios disponibles...</p>
       </div>
+    `;
+  }
+
+  private renderReservas(reservas: any[]): void {
+    if (!reservas || reservas.length === 0) {
+      this.reservasContainer.innerHTML = `
+        <div class="empty-container">
+          <p>No hay reservas registradas aún</p>
+        </div>
+      `;
+      return;
+    }
+
+    this.reservasContainer.innerHTML = `
+      <ul>
+        ${reservas.map(r => `
+          <li>
+            <div class="reserva-info">
+              <span class="nombre">${r.servicio_nombre || 'Servicio'}</span>
+              <span class="detalle">${r.cliente_nombre || 'Cliente'} • ${r.profesional_nombre || 'Profesional'}</span>
+              <span class="fecha-hora">${new Date(r.fecha).toLocaleDateString('es-CO')} • ${r.hora}</span>
+            </div>
+            <span class="estado ${r.estado.toLowerCase()}">${r.estado}</span>
+          </li>
+        `).join('')}
+      </ul>
     `;
   }
 

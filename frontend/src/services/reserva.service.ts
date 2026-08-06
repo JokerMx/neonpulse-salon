@@ -1,7 +1,6 @@
 // frontend/src/services/reserva.service.ts
 import { ApiService } from './api.service';
 import type { Reserva, CrearReservaDTO } from '../interfaces/reserva.interface';
-import type { ApiResponse } from '../interfaces/api-response.interface';
 
 export class ReservaService {
   static async getAll(): Promise<Reserva[]> {

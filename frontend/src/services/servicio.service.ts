@@ -1,7 +1,6 @@
 // frontend/src/services/servicio.service.ts
 import { ApiService } from './api.service';
 import type { Servicio } from '../interfaces/servicio.interface';
-import type { ApiResponse } from '../interfaces/api-response.interface';
 
 export class ServicioService {
   static async getAll(): Promise<Servicio[]> {

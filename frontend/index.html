@@ -5,21 +5,43 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NeonPulse - Salón de Belleza</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/src/style.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>💇‍♀️ NeonPulse Salón</h1>
-      <p>Tu estilo, nuestra pasión</p>
-    </header>
+  <!-- Header / Navbar -->
+  <header>
+    <div class="container">
+      <nav style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <a href="#" class="logo">
+          <span class="sparkle">✦</span> Neon<span>Pulse</span>
+        </a>
+        <ul>
+          <li><a href="#servicios-section">Servicios</a></li>
+          <li><a href="#reservas-section">Reservas</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
+  <!-- Hero Section -->
+  <div class="container">
+    <section class="hero">
+      <h1><span class="highlight">Bienvenida a</span> NeonPulse</h1>
+      <p>Donde la belleza se transforma en arte. Descubre nuestros servicios exclusivos.</p>
+      <a href="#servicios-section" class="btn-cta">Ver Servicios</a>
+    </section>
+
+    <!-- Servicios -->
     <section id="servicios-section">
       <h2>Nuestros Servicios</h2>
       <div id="servicios-container"></div>
     </section>
 
+    <!-- Reservas -->
     <section id="reservas-section">
+      <h2>Reservas Recientes</h2>
       <div id="reservas-container"></div>
     </section>
   </div>
@@ -31,7 +53,7 @@
       <h2>📅 Nueva Reserva</h2>
       <form id="form-reserva">
         <input type="hidden" name="servicio_id">
-        
+
         <div class="form-group">
           <label for="cliente_id">Cliente</label>
           <select id="cliente_id" name="cliente_id" required>
@@ -62,7 +84,7 @@
           <input type="time" id="hora" name="hora" required>
         </div>
 
-        <button type="submit" class="btn-submit">Reservar</button>
+        <button type="submit" class="btn-submit">Reservar Cita</button>
       </form>
     </div>
   </div>
