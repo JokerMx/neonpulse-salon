@@ -6,7 +6,6 @@
     },
     "backend": {
       "root": "backend",
-      "buildCommand": "npm run build",
       "startCommand": "npm start",
       "outputDirectory": "dist"
     }
