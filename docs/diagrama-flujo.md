@@ -6,7 +6,7 @@ flowchart TD
     B --> C[Registrar event listeners]
     C --> D[Cargar servicios async]
 
-    D --> D1[renderState CARGANDO]
+    D --> D1[⏳]
     D1 --> D2[ServicioService getAll]
     D2 --> D3[ApiService fetch GET /servicios]
 
@@ -23,10 +23,10 @@ flowchart TD
 
     L --> M{Click btn-reservar}
     M --> N[Obtener servicioId]
-    M --> O[Dispachar evento reservar-servicio]
+    M --> O[Dispatch evento reservar-servicio]
     O --> P[mostrarFormularioReserva]
 
-    P --> Q[Set min/max fecha hoy hoy+30]
+    P --> Q[Set min/max fecha]
     Q --> R[Abrir modal]
 
     R --> S{Submit form}
@@ -34,13 +34,13 @@ flowchart TD
     S --> U[Leer FormData]
     U --> V{Validar fecha}
     V -->|Fecha < hoy| W[Notificacion fecha anterior]
-    V -->|Fecha > hoy+30| X[Notificacion mas de 30 dias]
+    V -->|"Fecha > hoy+30"| X[Notificacion mas de 30 dias]
     V -->|OK| Y{Campos completos?}
     Y -->|Faltan| Z[Notificacion obligatorios]
     Y -->|OK| AA[ReservaService create]
 
     AA --> AB[ApiService fetch POST /reservas]
-    AB --> AC{response.ok?}
+    AB --> AC{"response.ok?"}
     AC -->|No| AD[Notificacion error]
     AC -->|Si| AE[Notificacion exito]
     AE --> AF[Cerrar modal reset form]

@@ -76,11 +76,13 @@ export function mostrarNotificacion(
     notificacion.style.transform = 'translateX(0)';
   }, 10);
 
+  const duracion = parseInt(import.meta.env.VITE_NOTIFICATION_DURATION || '5000', 10);
+
   setTimeout(() => {
     if (notificacion.parentNode) {
       notificacion.style.opacity = '0';
       notificacion.style.transform = 'translateX(120%)';
       setTimeout(() => notificacion.remove(), 400);
     }
-  }, 6000);
+  }, duracion);
 }

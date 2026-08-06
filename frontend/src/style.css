@@ -530,7 +530,6 @@ section h2::after {
   padding: 0.5rem 0.75rem;
   border-radius: 8px;
   margin-top: 0.4rem;
-  display: flex;
   align-items: center;
   gap: 0.4rem;
   animation: pulse-danger 1.5s ease-in-out infinite;

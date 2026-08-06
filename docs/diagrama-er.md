@@ -44,7 +44,6 @@ erDiagram
         enum estado
         timestamp created_at
         timestamp updated_at
-        unique "profesional_id + fecha + hora"
     }
 
     CLIENTES ||--o{ RESERVAS : "cliente_id to id (RESTRICT)"

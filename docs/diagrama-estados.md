@@ -41,6 +41,12 @@ stateDiagram-v2
         Reserva cancelada. No
         afecta disponibilidad.
     end note
+
+    style PENDIENTE fill:#f39c12,stroke:#e67e22,color:#fff,stroke-width:3px
+    style CONFIRMADA fill:#9b59b6,stroke:#8e44ad,color:#fff,stroke-width:3px
+    style EN_PROGRESO fill:#3498db,stroke:#2980b9,color:#fff,stroke-width:3px
+    style COMPLETADA fill:#2ecc71,stroke:#27ae60,color:#fff,stroke-width:3px
+    style CANCELADA fill:#e74c3c,stroke:#c0392b,color:#fff,stroke-width:3px
 ```
 
 ## Valores del Enum EstadoReserva
