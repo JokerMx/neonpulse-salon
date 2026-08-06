@@ -3,6 +3,7 @@ import type { Servicio } from '../interfaces/servicio.interface';
 import { EstadoCarga } from '../enums/estados.enum';
 import { obtenerIconoCategoria } from '../utils/icon-categories';
 import { ReservaService } from '../services/reserva.service';
+import type { Reserva } from '../interfaces/reserva.interface';
 
 export class ServiciosView {
   private container: HTMLElement;
@@ -138,7 +139,7 @@ export class ServiciosView {
     `;
   }
 
-  private renderReservas(reservas: any[]): void {
+  private renderReservas(reservas: Reserva[]): void {
     if (!reservas || reservas.length === 0) {
       this.reservasContainer.innerHTML = `
         <div class="empty-container">

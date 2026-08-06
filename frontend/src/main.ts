@@ -3,6 +3,7 @@ import { ServicioService } from './services/servicio.service';
 import { ReservaService } from './services/reserva.service';
 import { ServiciosView } from './views/servicios.view';
 import { EstadoCarga } from './enums/estados.enum';
+import { mostrarNotificacion } from './utils/notificacion';
 import './style.css';
 
 class App {
@@ -47,6 +48,17 @@ class App {
       inputServicio.value = servicioId.toString();
     }
 
+    const inputFecha = form.querySelector('#fecha') as HTMLInputElement;
+    if (inputFecha) {
+      const hoy = new Date();
+      const fechaHoy = hoy.toISOString().split('T')[0];
+      const fechaMax = new Date(hoy.getTime() + 30 * 24 * 60 * 60 * 1000);
+      const fechaMaxStr = fechaMax.toISOString().split('T')[0];
+      inputFecha.min = fechaHoy;
+      inputFecha.max = fechaMaxStr;
+      inputFecha.value = '';
+    }
+
     modal.classList.remove('hidden');
 
     form.addEventListener('submit', async (event: Event) => {
@@ -54,11 +66,29 @@ class App {
 
       try {
         const formData = new FormData(form);
+        const fechaStr = formData.get('fecha') as string;
+        const fechaSeleccionada = new Date(fechaStr);
+
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+
+        const fechaLimite = new Date(hoy.getTime() + 30 * 24 * 60 * 60 * 1000);
+
+        if (fechaSeleccionada < hoy) {
+          mostrarNotificacion('La fecha no puede ser anterior a la actual', 'error');
+          return;
+        }
+
+        if (fechaSeleccionada > fechaLimite) {
+          mostrarNotificacion('La fecha no puede ser más de 30 días en el futuro', 'error');
+          return;
+        }
+
         const reservaData = {
           cliente_id: parseInt(formData.get('cliente_id') as string),
           servicio_id: parseInt(formData.get('servicio_id') as string),
           profesional_id: parseInt(formData.get('profesional_id') as string),
-          fecha: formData.get('fecha') as string,
+          fecha: fechaStr,
           hora: formData.get('hora') as string
         };
 
@@ -68,12 +98,12 @@ class App {
         }
 
         await ReservaService.create(reservaData);
-        alert('✅ Reserva creada exitosamente');
+        mostrarNotificacion('Reserva creada exitosamente', 'exitosa');
         modal.classList.add('hidden');
         form.reset();
       } catch (error) {
         const mensaje = error instanceof Error ? error.message : 'Error al crear reserva';
-        alert(`❌ ${mensaje}`);
+        mostrarNotificacion(mensaje, 'error');
         console.error('Error al crear reserva:', error);
       }
     });

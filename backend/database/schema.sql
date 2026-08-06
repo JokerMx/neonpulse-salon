@@ -67,3 +67,8 @@ INSERT INTO profesionales (nombre, especialidad, horario) VALUES
 ('María González', 'ESTILISTA', '{"lunes": "09:00-18:00", "martes": "09:00-18:00"}'),
 ('Carlos Rodríguez', 'BARBERO', '{"miercoles": "10:00-20:00", "jueves": "10:00-20:00"}'),
 ('Ana Martínez', 'COLORISTA', '{"viernes": "09:00-17:00", "sabado": "09:00-14:00"}');
+
+INSERT INTO clientes (nombre, telefono, email, tipo) VALUES
+('María Pérez', '3001234567', 'maria.perez@email.com', 'VIP'),
+('Juan García', '3007654321', 'juan.garcia@email.com', 'REGULAR'),
+('Laura Sánchez', '3109876543', 'laura.sanchez@email.com', 'NUEVO');

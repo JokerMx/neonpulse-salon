@@ -11,3 +11,9 @@ export interface ReservaModel {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface ReservaConDetalles extends ReservaModel {
+  cliente_nombre: string;
+  servicio_nombre: string;
+  profesional_nombre: string;
+}

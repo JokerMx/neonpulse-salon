@@ -1,7 +1,7 @@
 // frontend/src/interfaces/api-response.interface.ts
 
 // Asegurar que está exportando correctamente
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data: T;
   message?: string;
