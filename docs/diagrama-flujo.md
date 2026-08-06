@@ -2,66 +2,64 @@
 
 ```mermaid
 flowchart TD
-    A[DOMContentLoaded] --> B[Crear instancia App]
-    B --> C[Registrar event listeners]
-    C --> D[Cargar servicios async]
+    A[DOMContentLoaded] --> B[App]
+    B --> C[Event listeners]
+    C --> D[Cargar servicios]
 
     D --> D1[⏳]
-    D1 --> D2[ServicioService getAll]
-    D2 --> D3[ApiService fetch GET /servicios]
+    D1 --> D2[ServicioService]
+    D2 --> D3[fetch GET /servicios]
 
-    D3 --> E{response.ok?}
-    E -->|No| F[Mostrar Error]
+    D3 --> E{OK?}
+    E -->|No| F[Error]
     F --> D
 
-    E -->|Si| G[parsear JSON a ApiResponse]
-    G --> H{Array.length > 0?}
-    H -->|No| I[renderState VACIO]
-    H -->|Si| J[renderState EXITO]
+    E -->|Si| G[Parsear JSON]
+    G --> H{Hay datos?}
+    H -->|No| I[Vacío]
+    H -->|Si| J[Éxito]
     J --> K[Renderizar tarjetas]
-    K --> L[Registrar click handler]
+    K --> L[Click handler]
 
-    L --> M{Click btn-reservar}
-    M --> N[Obtener servicioId]
-    M --> O[Dispatch evento reservar-servicio]
-    O --> P[mostrarFormularioReserva]
+    L --> M{Reservar?}
+    M --> N[servicioId]
+    M --> O[Evento]
+    O --> P[Formulario]
 
-    P --> Q[Set min/max fecha]
-    Q --> R[Abrir modal]
+    P --> Q[Fechas]
+    Q --> R[Modal]
 
-    R --> S{Submit form}
+    R --> S{Submit}
     S --> T[preventDefault]
-    S --> U[Leer FormData]
-    U --> V{Validar fecha}
-    V -->|Fecha < hoy| W[Notificacion fecha anterior]
-    V -->|"Fecha > hoy+30"| X[Notificacion mas de 30 dias]
-    V -->|OK| Y{Campos completos?}
-    Y -->|Faltan| Z[Notificacion obligatorios]
-    Y -->|OK| AA[ReservaService create]
+    S --> U[FormData]
+    U --> V{Fecha válida?}
+    V -->|No| W[Error fecha]
+    V -->|Sí| Y{Campos OK?}
+    Y -->|No| Z[Error campos]
+    Y -->|Sí| AA[Crear reserva]
 
-    AA --> AB[ApiService fetch POST /reservas]
-    AB --> AC{"response.ok?"}
-    AC -->|No| AD[Notificacion error]
-    AC -->|Si| AE[Notificacion exito]
-    AE --> AF[Cerrar modal reset form]
+    AA --> AB[fetch POST /reservas]
+    AB --> AC{OK?}
+    AC -->|No| AD[Error]
+    AC -->|Sí| AE[Éxito]
+    AE --> AF[Cerrar modal]
 
-    K --> AG[CargarReservas async]
-    AG --> AH[ApiService fetch GET /reservas]
-    AH --> AI[renderReservas]
+    K --> AG[Cargar reservas]
+    AG --> AH[fetch GET /reservas]
+    AH --> AI[Renderizar]
 
     AG --> AJ[Auto-refresh 30s]
     AJ --> AG
 
-    F --> AK{Click reintentar}
+    F --> AK{Reintentar}
     AK --> D
 
     classDef success fill:#2ecc71,stroke:#fff,color:#fff
     classDef error fill:#e74c3c,stroke:#fff,color:#fff
     classDef loading fill:#3498db,stroke:#fff,color:#fff
-    classDef warning fill:#f39c12,stroke:#fff,color:#fff
     classDef info fill:#6a0dad,stroke:#fff,color:#fff
 
-    class W,X,Z,AD error
+    class W,Z,AD error
     class AE,AF success
     class D1,F,I loading
     class V,Y,AC info

@@ -2,44 +2,38 @@
 
 ```mermaid
 stateDiagram-v2
-    [*] --> PENDIENTE: Crear reserva POST /api/reservas
+    [*] --> PENDIENTE: Crear reserva
 
-    PENDIENTE --> CONFIRMADA: Confirmar cita
-    PENDIENTE --> CANCELADA: Cancelar cita
+    PENDIENTE --> CONFIRMADA: Confirmar
+    PENDIENTE --> CANCELADA: Cancelar
 
-    CONFIRMADA --> EN_PROGRESO: Iniciar servicio
-    CONFIRMADA --> CANCELADA: Cancelar cita
+    CONFIRMADA --> EN_PROGRESO: Iniciar
+    CONFIRMADA --> CANCELADA: Cancelar
 
-    EN_PROGRESO --> COMPLETADA: Finalizar servicio
-    EN_PROGRESO --> CANCELADA: Cancelar cita
+    EN_PROGRESO --> COMPLETADA: Finalizar
+    EN_PROGRESO --> CANCELADA: Cancelar
 
-    COMPLETADA --> [*]: Reserva finalizada
-    CANCELADA --> [*]: Reserva anulada
+    COMPLETADA --> [*]: Fin
+    CANCELADA --> [*]: Anulada
 
     note right of PENDIENTE
-        Estado inicial al crear
-        la reserva. El profesional
-        debe validar disponibilidad.
+        Estado inicial
     end note
 
     note right of CONFIRMADA
-        Cita confirmada por el
-        cliente o administrador.
+        Cita confirmada
     end note
 
     note right of EN_PROGRESO
-        El profesional esta
-        atendiendo el servicio.
+        En ejecución
     end note
 
     note right of COMPLETADA
-        Servicio finalizado. La
-        reserva no puede modificarse.
+        Servicio finalizado
     end note
 
     note right of CANCELADA
-        Reserva cancelada. No
-        afecta disponibilidad.
+        Reserva anulada
     end note
 
     style PENDIENTE fill:#f39c12,stroke:#e67e22,color:#fff,stroke-width:3px
@@ -53,7 +47,7 @@ stateDiagram-v2
 
 | Estado | Color UI | Descripción |
 |---|---|---|
-| `PENDIENTE` | Naranja | Reserva creada pero no confirmada |
+| `PENDIENTE` | Naranja | Reserva creada, no confirmada |
 | `CONFIRMADA` | Púrpura | Cita confirmada |
 | `EN_PROGRESO` | Azul | Servicio en ejecución |
 | `COMPLETADA` | Verde | Servicio finalizado |

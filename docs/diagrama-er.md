@@ -3,7 +3,7 @@
 ```mermaid
 erDiagram
     SERVICIOS {
-        int id PK "Auto-increment"
+        int id PK
         varchar nombre
         text descripcion
         decimal precio
@@ -15,7 +15,7 @@ erDiagram
     }
 
     PROFESIONALES {
-        int id PK "Auto-increment"
+        int id PK
         varchar nombre
         enum especialidad
         json horario
@@ -25,17 +25,17 @@ erDiagram
     }
 
     CLIENTES {
-        int id PK "Auto-increment"
+        int id PK
         varchar nombre
         varchar telefono
-        varchar email "UNIQUE"
+        varchar email UNIQUE
         enum tipo
         timestamp created_at
         timestamp updated_at
     }
 
     RESERVAS {
-        int id PK "Auto-increment"
+        int id PK
         int cliente_id FK
         int servicio_id FK
         int profesional_id FK
@@ -46,21 +46,21 @@ erDiagram
         timestamp updated_at
     }
 
-    CLIENTES ||--o{ RESERVAS : "cliente_id to id (RESTRICT)"
-    SERVICIOS ||--o{ RESERVAS : "servicio_id to id (RESTRICT)"
-    PROFESIONALES ||--o{ RESERVAS : "profesional_id to id (RESTRICT)"
+    CLIENTES ||--o{ RESERVAS : "cliente_id"
+    SERVICIOS ||--o{ RESERVAS : "servicio_id"
+    PROFESIONALES ||--o{ RESERVAS : "profesional_id"
 ```
 
 ## Descripción
 
 | Tabla | Descripción |
 |---|---|
-| **servicios** | Catálogo de servicios ofrecidos por el salón |
-| **profesionales** | Personal del salón con su especialidad y horario |
-| **clientes** | Clientes registrados con tipo (NUEVO/REGULAR/VIP) |
-| **reservas** | Reservas de citas con estado (PENDIENTE/CONFIRMADA/EN_PROGRESO/COMPLETADA/CANCELADA) |
+| **servicios** | Catálogo de servicios |
+| **profesionales** | Personal y especialidad |
+| **clientes** | Clientes registrados |
+| **reservas** | Reservas de citas |
 
 ## Restricciones
 - `email` en clientes es UNIQUE
-- `cliente_id`, `servicio_id`, `profesional_id` en reservas son FK con ON DELETE RESTRICT
-- `unique_reserva (profesional_id, fecha, hora)` impide dobles reservas del mismo profesional en el mismo horario
+- `cliente_id`, `servicio_id`, `profesional_id` en reservas son FK RESTRICT
+- `unique_reserva (profesional_id, fecha, hora)` previene dobles reservas
