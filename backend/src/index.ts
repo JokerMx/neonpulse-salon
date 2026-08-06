@@ -14,9 +14,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middlewares
+const corsOrigin = process.env.NODE_ENV === 'production'
+  ? process.env.FRONTEND_URL || 'https://neonpulse-salon.vercel.app'
+  : 'http://localhost:5173';
+
 app.use(helmet());
 app.use(cors({
-  origin: 'http://localhost:5173', // Vite default port
+  origin: corsOrigin,
   credentials: true
 }));
 app.use(morgan('dev'));
@@ -41,7 +45,11 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
-  console.log(`📚 Documentación API: http://localhost:${PORT}/health`);
-});
+export default app;
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+    console.log(`📚 Documentación API: http://localhost:${PORT}/health`);
+  });
+}
