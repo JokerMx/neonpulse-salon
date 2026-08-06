@@ -2,7 +2,7 @@
 import type { ApiResponse } from '../interfaces/api-response.interface';
 
 export class ApiService {
-  private static baseUrl: string = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+  private static baseUrl: string = import.meta.env.VITE_API_URL || '/api';
   private static timeout: number = parseInt(import.meta.env.VITE_API_TIMEOUT || '10000');
 
   static async fetch<T>(
