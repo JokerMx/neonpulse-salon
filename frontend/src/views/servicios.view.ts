@@ -32,7 +32,7 @@ export class ServiciosView {
     }, 30000);
   }
 
-  private async cargarReservas(): Promise<void> {
+  public async cargarReservas(): Promise<void> {
     try {
       const reservas = await ReservaService.getAll();
       this.renderReservas(reservas);

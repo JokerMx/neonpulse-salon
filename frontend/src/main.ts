@@ -229,6 +229,7 @@ class App {
       try {
         await ReservaService.create(reservaData);
         mostrarNotificacion('Reserva creada exitosamente', 'exitosa');
+        await this.serviciosView.cargarReservas();
         modal.classList.add('hidden');
         form.reset();
         this.limpiarErrores(formElement);
